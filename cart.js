@@ -1,13 +1,33 @@
-const addToCartButtons = document.querySelectorAll(
-  ".add-to-cart-btn"
-);
+ $(function() {
 
-addToCartButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    const chocolateCard = event.target.parentElement;
-    const chocolateName =
-      chocolateCard.querySelector("h3").textContent;
+var origTitle, animatedTitle, timer;
 
-    alert(`Added ${chocolateName} to the cart`);
-  });
+function animateTitle(newTitle) {
+  var currentState = false;
+  origTitle = document.title;  // save original title
+  animatedTitle = "Hey There! " + origTitle;
+  timer = setInterval(startAnimation, 2000);
+
+  function startAnimation() {
+    // animate between the original and the new title
+    document.title = currentState ? origTitle : animatedTitle;
+    currentState = !currentState;
+  }
+}
+
+function restoreTitle() {
+  clearInterval(timer);
+  document.title = origTitle; // restore original title
+}
+
+// Change page title on blur
+$(window).blur(function() {
+    animateTitle();
+});
+
+// Change page title back on focus
+$(window).focus(function() {
+    restoreTitle();
+});
+
 });
