@@ -1,10 +1,11 @@
- $(function() {
+
+$(function() {
 
 var origTitle, animatedTitle, timer;
 
 function animateTitle(newTitle) {
   var currentState = false;
-  origTitle = document.title;  // save original title
+  origTitle = document.about;  // save original title
   animatedTitle = "Hey There! " + origTitle;
   timer = setInterval(startAnimation, 2000);
 
