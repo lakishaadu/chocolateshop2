@@ -11,32 +11,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>  
       <link rel="stylesheet" type="text/css" href="style.css" />
 
-    <title>The Chocolate Shop
-    var focusTitle = $('head title').text(); // Originalen Title speichern
-var tab = 0;
-$(window).on('blur focus', function(e) {
- var prevType = $(this).data('prevType'); 
- if (prevType != e.type) {
-   switch (e.type) {
-     case 'blur':
-     var i=0;
-     tab = setInterval(function() {
-       switch(i++%2) {
-         case 0: document.title = 'Wir sind'; // Erste Anzeige im Tab
-         break;
-         case 1: document.title = 'kulturbanause'; // Zweite Anzeige im Tab
-       }
-     }, 1000); // Zeit zwischen dem Wechsel der Anzeigen
-     break;
-     case 'focus': 
-       clearInterval(tab);
-       document.title = focusTitle; // Originalen Title einsetzen
-     break;
-   }
- }
- $(this).data('prevType', e.type);
+   $(function() {
+
+var origTitle, animatedTitle, timer;
+
+function animateTitle(newTitle) {
+  var currentState = false;
+  origTitle = document.title;  // save original title
+  animatedTitle = "Hey There! " + origTitle;
+  timer = setInterval(startAnimation, 2000);
+
+  function startAnimation() {
+    // animate between the original and the new title
+    document.title = currentState ? origTitle : animatedTitle;
+    currentState = !currentState;
+  }
+}
+
+function restoreTitle() {
+  clearInterval(timer);
+  document.title = origTitle; // restore original title
+}
+
+// Change page title on blur
+$(window).blur(function() {
+    animateTitle();
 });
-    </title>
+
+// Change page title back on focus
+$(window).focus(function() {
+    restoreTitle();
+});
+
+});
 
     
   </head>
