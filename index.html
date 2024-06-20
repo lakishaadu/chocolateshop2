@@ -9,8 +9,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-WHCJD39');</script>
 <!-- End Google Tag Manager -->
     <title>The Chocolate Shop</title>
+    var focusTitle = $('head title').text(); // Originalen Title speichern
+var tab = 0;
+$(window).on('blur focus', function(e) {
+ var prevType = $(this).data('prevType'); 
+ if (prevType != e.type) {
+   switch (e.type) {
+     case 'blur':
+     var i=0;
+     tab = setInterval(function() {
+       switch(i++%2) {
+         case 0: document.title = 'Wir sind'; // Erste Anzeige im Tab
+         break;
+         case 1: document.title = 'kulturbanause'; // Zweite Anzeige im Tab
+       }
+     }, 1000); // Zeit zwischen dem Wechsel der Anzeigen
+     break;
+     case 'focus': 
+       clearInterval(tab);
+       document.title = focusTitle; // Originalen Title einsetzen
+     break;
+   }
+ }
+ $(this).data('prevType', e.type);
+});
+    
+    
+    
     <link rel="stylesheet" type="text/css" href="style.css" />
-   
+   <script src="https://ajax.googleapis.com/ajax/libs/cesiumjs/1.78/Build/Cesium/Cesium.js"></script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
