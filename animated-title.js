@@ -1,26 +1,42 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const messages = ["Willkommen!", "Schön, dass du hier bist!", "Viel Spaß auf unserer Seite!"];
+    const originalTitle = document.title;
+    const messages = ["Komm zurück!", "Wir vermissen dich!", "Hier gibt es mehr!"];
     let currentMessage = 0;
     let currentChar = 0;
     let title = '';
+    let interval;
 
     function animateTitle() {
         if (currentChar < messages[currentMessage].length) {
             title += messages[currentMessage].charAt(currentChar);
             currentChar++;
             document.title = title;
-            setTimeout(animateTitle, 200); // Geschwindigkeit der Zeichen
+            interval = setTimeout(animateTitle, 200); // Geschwindigkeit der Zeichen
         } else {
-            setTimeout(nextMessage, 1000); // Zeit bis zur nächsten Nachricht
+            currentChar = 0;
+            title = '';
+            currentMessage = (currentMessage + 1) % messages.length;
+            interval = setTimeout(animateTitle, 1000); // Zeit bis zur nächsten Nachricht
         }
     }
 
-    function nextMessage() {
-        currentChar = 0;
-        title = '';
-        currentMessage = (currentMessage + 1) % messages.length;
-        animateTitle();
+    function startAnimation() {
+        if (!interval) {
+            animateTitle();
+        }
     }
 
-    animateTitle();
+    function stopAnimation() {
+        clearTimeout(interval);
+        interval = null;
+        document.title = originalTitle;
+    }
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            startAnimation();
+        } else {
+            stopAnimation();
+        }
+    });
 });
