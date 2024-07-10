@@ -1,33 +1,26 @@
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
+    const messages = ["Willkommen!", "Schön, dass du hier bist!", "Viel Spaß auf unserer Seite!"];
+    let currentMessage = 0;
+    let currentChar = 0;
+    let title = '';
 
-var origTitle, animatedTitle, timer;
+    function animateTitle() {
+        if (currentChar < messages[currentMessage].length) {
+            title += messages[currentMessage].charAt(currentChar);
+            currentChar++;
+            document.title = title;
+            setTimeout(animateTitle, 200); // Geschwindigkeit der Zeichen
+        } else {
+            setTimeout(nextMessage, 1000); // Zeit bis zur nächsten Nachricht
+        }
+    }
 
-function animateTitle(newTitle) {
-  var currentState = false;
-  origTitle = document.title;  // save original title
-  animatedTitle = "Hey There! " + origTitle;
-  timer = setInterval(startAnimation, 2000);
+    function nextMessage() {
+        currentChar = 0;
+        title = '';
+        currentMessage = (currentMessage + 1) % messages.length;
+        animateTitle();
+    }
 
-  function startAnimation() {
-    // animate between the original and the new title
-    document.title = currentState ? origTitle : animatedTitle;
-    currentState = !currentState;
-  }
-}
-
-function restoreTitle() {
-  clearInterval(timer);
-  document.title = origTitle; // restore original title
-}
-
-// Change page title on blur
-$(window).blur(function() {
     animateTitle();
-});
-
-// Change page title back on focus
-$(window).focus(function() {
-    restoreTitle();
-});
-
 });
